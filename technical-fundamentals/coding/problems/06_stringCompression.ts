@@ -7,5 +7,19 @@
 // You can assume the string has only uppercase and lowercase letters (a - z).
 
 export default function stringCompression (str: string) : string {
- 
+	let newStr = '';
+	
+	let c = 1;
+	for (let i = 0; i < str.length; i++) {
+		if (str[i] == str[i + 1]) {
+			c++;	
+		} else {
+			newStr = newStr + str[i] + c;
+			c = 1;
+		}
+	}
+
+	if (newStr.length >= str.length) newStr = str;
+
+	return newStr;
 }
