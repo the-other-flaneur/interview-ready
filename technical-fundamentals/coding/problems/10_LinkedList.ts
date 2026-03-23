@@ -13,9 +13,19 @@ export class LinkedList<T> {
   length: number;
 
   constructor(head?: Node<T>) {
-    this.head = head ?? undefined;
-    this.tail = head ?? undefined;
-    if (head) { this.length = 1; }
+    if (head) {
+      this.head = head;
+      let current = head;
+      let c = 0;
+      while (current) {
+        c++;
+	current = current.next;
+      }
+      this.tail = current;
+      this.length = c;
+    } else {
+      this.length = 0;
+    }
   }
 
   push(value: T): void {
@@ -96,11 +106,48 @@ export class LinkedList<T> {
 
   // extra
 
-  // find(fn: (value: T) => boolean): Node<T> | undefined {}
+  find(fn: (value: T) => boolean): Node<T> | undefined {
+    let current = this.head;
+    let result = undefined;
+    while(current) {
+      if (value == current.value) {
+        result = current;
+      }
+    }
+    return result;
+  }
 
-  // get(index: number): Node<T> | undefined {}
+  get(index: number): Node<T> | undefined {
+    if (index < 0 || index > this.length) return undefined;
+    let current = this.head;
+    let c = 0;
+    while(c < index && current) {
+        current = current.next;
+	c++;
+    }
+    return current;
+  }
 
-  // iterator(): LinkedListIterator {}
+  iterator(): LinkedListIterator<T> {
+    return new LinkedListIterator(this.head)
+  }
+}
+
+export class LinkedListIterator<T> {
+  private current: Node<T> | undefined;
+
+  constructor(start: Node<T> | undefined) {
+    this.current = start;
+  }
+
+  next(): { value: T | undefined; done: boolean } {
+    if (!this.current) {
+      return { value: undefined, done: true }
+    }
+    const value = this.current.value;
+    this.current = this.current.next;
+    return { value, done: false }
+  }
 }
 
 const list = new LinkedList();
