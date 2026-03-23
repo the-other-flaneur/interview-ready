@@ -12,4 +12,19 @@ export type Node<T> = {
   next?: Node<T>;
 };
 
-export default function removeDups<T>(head?: Node<T>): Node<T> | undefined {}
+export default function removeDups<T>(head?: Node<T>): Node<T> | undefined {
+  const seen = new Set<T>();
+  let current = head;
+  let prev: Node<T> | undefined;
+
+  while (current) {
+    if (seen.has(current.value)) {
+	    if (prev) prev.next = current.next;
+    } else {
+      seen.add(current.value);
+      prev = current;
+    }
+    current = current.next;
+  }
+  return head;
+}
